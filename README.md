@@ -1,5 +1,5 @@
 # Boosted Random Forest 
-Final Project Computational Physics (PHY381C Fall 2022)
+Final Project Computational Physics (PHY381C Fall 2022) \
 Authors: D. Stek, I. Jokhadze, M. Contreras Cossio
 
 ##  Quickstart
