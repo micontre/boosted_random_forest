@@ -1,6 +1,6 @@
-# Boosted Random Forest 
-Final Project Computational Physics (PHY381C Fall 2022) 
+# Performance of Random Forest (RF) vs Gradient Boosting (GB) vs stacking RF + GB, on Regression and Classification. 
 
+Final Project Computational Physics (PHY381C Fall 2022) 
 
 Authors: D. Stek, I. Jokhadze, M. Contreras Cossio
 
@@ -8,10 +8,20 @@ Authors: D. Stek, I. Jokhadze, M. Contreras Cossio
 
 how to setup the environment (if needed), and how to run the code
 
-Main file: BRF.ipynb
+Main file: main.ipynb
 
-## Section for brief description of the scripts  
+## Description of the scrips
 
-## Explain some theory here
+## Decision Trees
+
+## Bagging 
+
+### Random Forest 
+
+## Boosting
+
+###  Gradient Boosting
+
+## Stacking
 
 ## Reference Documentation
