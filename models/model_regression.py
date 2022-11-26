@@ -1,6 +1,7 @@
 from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.ensemble import StackingRegressor
+from sklearn.linear_model import RidgeCV
 
 class RandomForest_Regression:
     def __init__(self):
@@ -34,6 +35,6 @@ class Stacking_Regression(RandomForest_Regression, GradientBoosting_Regression):
                             ('Gradient Boosting', model_gb)]
 
     def Stack_model(self):
-        model_stack = StackingRegressor(estimators=self.estimators)
+        model_stack = StackingRegressor(estimators=self.estimators, 
+                                        final_estimator=RidgeCV())
         return model_stack
-

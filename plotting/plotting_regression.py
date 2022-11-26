@@ -83,5 +83,5 @@ class plots_regression:
         importance.plot.bar(figsize=(8,5))
         plt.ylabel('Lasso Coefficients')
         plt.title('Feature Importance')
-        plt.savefig("plots/features.png")
+        plt.savefig("plots/features_regression.png")
         plt.show()
