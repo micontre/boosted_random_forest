@@ -12,15 +12,10 @@ class plots_classification:
 
     def plot_confussion(self, models):
         fig, axs = plt.subplots(1, 3, figsize=(18, 6))
-        
-        #axs = np.ravel(axs)
 
         for ax, (name, est) in zip(axs, models):
             
             est.fit(self.X_train, self.y_train)
-            #proba = model.predict_proba(self.X_test)
-            #pred = np.where(proba[:,1] > 0.5, 1, 0)        
-            #pred = model.predict(self.X_test)
             plot_confusion_matrix(est,self.X_test, self.y_test, ax=ax,  normalize='true')
             ax.title.set_text(name)
             
