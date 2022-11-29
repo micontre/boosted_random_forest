@@ -1,35 +1,26 @@
 import pandas as pd
+from sklearn.datasets import make_regression
+from sklearn.datasets import make_classification
 from sklearn.model_selection import train_test_split
-from sklearn import datasets
 from sklearn.linear_model import Lasso
 from sklearn.feature_selection import SelectFromModel
-
 
 class load_datasets: 
     def __init__(self):
         pass
     
     def regression_dataset(self):
-        Xr, yr = datasets.load_diabetes(return_X_y=True)
-        columns_reg = ["age", "sex", "bmi", "blood_pressure", "s1_tc", 
-                        "s2_ldl", "s3_hdl", "s4_tch", "s5_ltg", "s6_glu", "diabetes_progression"]
-        Xr = pd.DataFrame(Xr, columns=columns_reg[0:10])
-        yr = pd.DataFrame(yr, columns=columns_reg[10:])
+        Xr, yr = make_regression(n_samples=500, n_features=10, noise=10)
+        Xr = pd.DataFrame(Xr)
+        yr = pd.DataFrame(yr)
         Xr_train, Xr_test, yr_train, yr_test = train_test_split(Xr, yr)
         return Xr_train, Xr_test, yr_train, yr_test
     
     def classification_dataset(self):
-        Xc, yc = datasets.load_breast_cancer(return_X_y=True)
-        columns_class = ["radius", "texture", "perimeter", "area", "smooth", "compact", "concavity",
-                        "concave_pts", "symmetry", "fractal_dim", "radius_std", "texture_std", 
-                        "perimeter_std", "area_std", "smooth_std", "compact_std", "concavity_std", 
-                        "concave_pts_std", "symmetry_std", "fractal_dim_std", "radius_max", 
-                        "texture_max", "perimeter_max", "area_max", "smooth_max", "compact_max", 
-                        "concavity_max", "concave_pts_max", "symmetry_max", "fractal_dim_max", 
-                        "benign_tumor"]
-        Xc = pd.DataFrame(Xc, columns=columns_class[0:30])
-        yc = pd.DataFrame(yc, columns=columns_class[30:])
-        Xc_train, Xc_test, yc_train, yc_test = train_test_split(Xc, yc, stratify=yc, random_state=42)
+        Xc, yc = make_classification(n_samples=500, n_features=10, n_classes=2, n_redundant=1)
+        Xc = pd.DataFrame(Xc)
+        yc = pd.DataFrame(yc)
+        Xc_train, Xc_test, yc_train, yc_test = train_test_split(Xc, yc)
         return Xc_train, Xc_test, yc_train, yc_test
 
 class select_features: 
@@ -49,8 +40,13 @@ class select_features:
         #print('features with coefficients shrank to zero: {}'.format(np.sum(sel_.estimator_.coef_== 0)))
         return selected_feats
 
-    def df_feature_selection(self,X_train, X_test, sel_feats):
-        X_train = X_train[sel_feats]
-        X_test = X_test[sel_feats]
+    def df_feature_selection(self,X_train, X_test, sel_features=None, importance=None):
+        if sel_features is None:
+            sel_features = []
+            for idx,val in enumerate(importance):
+                if val > 0.1:
+                    sel_features.append(idx)
+        X_train = X_train[sel_features]
+        X_test = X_test[sel_features]
         return X_train, X_test
 

@@ -4,7 +4,8 @@ import matplotlib.pyplot as plt
 import time
 import math
 from sklearn.metrics import mean_squared_log_error
-from sklearn.metrics import mean_squared_error,r2_score
+from sklearn.preprocessing import minmax_scale
+from sklearn.metrics import r2_score
 from sklearn.linear_model import Lasso
 
 
@@ -16,7 +17,7 @@ class plots_regression:
         self.y_test = y_test
 
     def plot_comparison_regression(self, models):
-        fig, axs = plt.subplots(1, 3, figsize=(18, 6))
+        fig, axs = plt.subplots(2, 2, figsize=(12, 9))
         
         axs = np.ravel(axs)
         errors_list=[]
@@ -33,8 +34,10 @@ class plots_regression:
             errors = y_test_flat - pred
             errors_list.append(errors)
             self.errors_list = errors_list
-            test_r2 = r2_score(np.exp(self.y_test), np.exp(pred))
-            test_rmsle=math.sqrt(mean_squared_log_error(self.y_test,pred))
+            y_scaled = minmax_scale(self.y_test, feature_range=(0,1))
+            pred_scaled = minmax_scale(pred, feature_range=(0,1))
+            test_r2 = r2_score(np.exp(y_scaled), np.exp(pred_scaled))
+            test_rmsle=math.sqrt(mean_squared_log_error(y_scaled,pred_scaled))
             self.plot_regression_results(ax,self.y_test,pred,name,(r'$R^2={:.3f}$' + '\n' +
                                     r'$RMSLE={:.3f}$').format(test_r2,test_rmsle),elapsed_time)
             plt.tight_layout()
@@ -64,12 +67,13 @@ class plots_regression:
         ax.set_title(title)
     
     def plot_error(self,models):
-        titles = ['Random Forest', 'Gradient Boosting','Stacking Regressor']
-        f,a = plt.subplots(1,3, figsize=(18, 6))
+        titles = ['Random Forest Regressor', 'Gradient Boosting Regressor','Stacking Regressor (RF+GB)', 'Stacking Regressor (GB+RF)' ]
+        f,a = plt.subplots(2,2, figsize=(12, 9))
         a = a.ravel()
         for idx,ax in enumerate(a):
             ax.hist(self.errors_list[idx])
             ax.set_title(titles[idx])
+            ax.set(xlabel="Error: y - f(x)")
         plt.tight_layout()
         plt.savefig("plots/error_regression.png")
         plt.show()
@@ -85,3 +89,4 @@ class plots_regression:
         plt.title('Feature Importance')
         plt.savefig("plots/features_regression.png")
         plt.show()
+        return importance
