@@ -10,6 +10,9 @@ from sklearn.linear_model import Lasso
 
 
 class plots_regression:
+    """
+    plotter of the regression figures
+    """
     def __init__(self, X_train, y_train, X_test, y_test):
         self.X_train = X_train
         self.y_train = y_train
@@ -17,6 +20,11 @@ class plots_regression:
         self.y_test = y_test
 
     def plot_comparison_regression(self, models):
+        """
+        Plotter for subplotting on a single figure the comparison of true vs predicted
+        values for regression
+        """
+
         fig, axs = plt.subplots(2, 2, figsize=(12, 9))
         
         axs = np.ravel(axs)
@@ -25,10 +33,13 @@ class plots_regression:
         for ax, (name, est) in zip(axs, models):
             start_time = time.time()
             
+            # fitting the model
             model = est.fit(self.X_train, self.y_train)
-                            
+
+            # obtaining the time                 
             elapsed_time = time.time() - start_time
             
+            # obtaining the predictions, and errors
             pred = model.predict(self.X_test)
             y_test_flat = [item for sublist in self.y_test.values for item in sublist]
             errors = y_test_flat - pred
@@ -38,6 +49,8 @@ class plots_regression:
             pred_scaled = minmax_scale(pred, feature_range=(0,1))
             test_r2 = r2_score(np.exp(y_scaled), np.exp(pred_scaled))
             test_rmsle=math.sqrt(mean_squared_log_error(y_scaled,pred_scaled))
+
+            # plotting
             self.plot_regression_results(ax,self.y_test,pred,name,(r'$R^2={:.3f}$' + '\n' +
                                     r'$RMSLE={:.3f}$').format(test_r2,test_rmsle),elapsed_time)
             plt.tight_layout()
@@ -46,7 +59,9 @@ class plots_regression:
         plt.show()
 
     def plot_regression_results(self, ax, y_true, y_pred, title, scores, elapsed_time):
-        """Scatter plot of the predicted vs true targets."""
+        """
+        Scatter plot of the predicted vs true targets
+        """
         ax.plot([y_true.min(), y_true.max()],
                 [y_true.min(), y_true.max()],
                 '--r', linewidth=2)
@@ -67,10 +82,14 @@ class plots_regression:
         ax.set_title(title)
     
     def plot_error(self,models):
+        """
+        Plotter for the error between predicted value and true value
+        """
         titles = ['Random Forest Regressor', 'Gradient Boosting Regressor','Stacking Regressor (RF+GB)', 'Stacking Regressor (GB+RF)' ]
         f,a = plt.subplots(2,2, figsize=(12, 9))
         a = a.ravel()
         for idx,ax in enumerate(a):
+            # plotting the histograms of errors 
             ax.hist(self.errors_list[idx])
             ax.set_title(titles[idx])
             ax.set(xlabel="Error: y - f(x)")
@@ -79,11 +98,19 @@ class plots_regression:
         plt.show()
 
     def plot_feature_importance(self, selected_feats):
+        """
+        Plotter for feature importance
+        """
+        # building the Lasso model (an unbiased model different than RF and GB)
         lin_model = Lasso(alpha=0.005, random_state=0)
         model = lin_model.fit(self.X_train, self.y_train)
+
+        # obtaining feature importance
         importance = pd.Series(np.abs(lin_model.coef_.ravel()))
         importance.index = selected_feats
         importance.sort_values(inplace=True, ascending=False)
+
+        # plotting the feature importance
         importance.plot.bar(figsize=(8,5))
         plt.ylabel('Lasso Coefficients')
         plt.title('Feature Importance')
