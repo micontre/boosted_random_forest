@@ -34,6 +34,22 @@ conda install -c conda-forge
 
 ## Description of the scripts
 
+###  `main.ipynb`
+
+Main file to run, uses the functions present on `utils.py`, `\plotting`, and `\models`, to compare Random Forest and Gradient Boosting. Shows the final results and figures. 
+
+This is a jupyter notebook. 
+
+### `utils.py`
+
+Contains useful miscellaneous functions that load, and clean the datasets. 
+
+### `\plotting`
+
+Contains `plotting_regression.py` and `plotting_classification.py`, that manage the classes needed for plotting the results. Plots are shown on the `main.ipynb` notebook, and also saved on `\plots`. 
+
+### `\models`
+Contains `model_regression.py` and `model_classification.py`, that build the Gradient Boosting, Random Forest, and their stacks using regression, and classification, respectively. Also contains the hyperparameter grid search to find the best estimator for each model. 
 
 
 ## Ensembles
