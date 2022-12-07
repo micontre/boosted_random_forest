@@ -41,15 +41,26 @@ Ensemble models take multiple models (called “weak learners”) and combine t
 ### Decision tree 
 A decision tree uses a series of questions to hierarchically partition the data. Each branch consists of a question that splits the data into smaller subsets.
 
+![](images/decisiontree.png)
+
 ###  <ins>Bagging </ins>
 Bagging (bootstrap aggregating), is the process of creating and merging a collection of independent, parallel decision trees using different subsets of the training data.
+
 For Continuous predictors the ensemble aggregate predictor is the average:
-〖𝑔 ̂^𝐴〗_ℒ (𝑥)=1/𝑀 ∑_(𝑖=1)^𝑀▒〖𝑔_ℒ (𝑥)〗
-         Where ℒ is a dataset that is divided into 𝑀 smaller datasets {ℒ_1,…,ℒ_𝑀}.
+
+
+$$
+\hat{g}^A_L(x) = \frac{1}{M}\sum_{i = 1}^{M} {g_L(x)}
+$$
+
+Where $L$ is a dataset that is divided into $𝑀$ smaller datasets ${L_1,…,L_𝑀}$.
 
 For the classification tasks, where each predictor predicts a class label , this is just a majority vote of the predictors,
-〖𝑔 ̂^𝐴〗_ℒ (𝑥)=𝑎𝑟𝑔  max┬𝑗⁡∑_(𝑖=1)^𝑀▒〖𝐼|𝑔_ℒ (𝑥)=𝑗|〗
-        Where 𝐼|𝑔_ℒ (𝑥)=𝑗|  is an indicator function.
+
+$$
+\hat{g}^A_L(x) = \text{arg max} \sum_{i = 1}^{M} {I |g_L(x)=j|}
+$$
+Where $I |g_L(x)=j|$ is an indicator function.
                          
 
 
@@ -59,9 +70,12 @@ The random forest algorithm is an extension of the bagging method as it utilizes
 
 ### <ins> Boosting </ins>
 
-In bagging, the contribution of all predictors is weighted equally in the bagged predictor. In boosting each classifier is associated with a weight 𝑤_𝑘
-𝑔_𝐴 (𝑥)=∑_(𝑘=1)^𝑀▒〖𝑤_𝑘 𝑔_ℒ (𝑥)〗
-       where ∑_(𝑘=1)^𝑀▒〖𝑤_𝑘  〗=1.
+In bagging, the contribution of all predictors is weighted equally in the bagged predictor. In boosting each classifier is associated with a weight $w_k$
+
+$$
+g_A(x) = \sum_{k = 1}^{M} {w_k g_L(x)}
+$$
+
 In boosting the ensembles are created by adding new decision trees to the ensemble.
 
 
@@ -76,6 +90,8 @@ In stacking model one can attack a learning problem with different types of mode
 Multiple different learners can be built and used to build an intermediate prediction, one prediction for each learned model. Then a new model is added which learns from the intermediate predictions the same target.
 
 This final model is said to be stacked on the top of the others. Thus, the overall performance can be improved, and often the model is better than any individual intermediate model.
+
+![](images/stack.png)
 
 ## Bagging vs. Boosting vs. Stacking
 
