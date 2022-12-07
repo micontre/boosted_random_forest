@@ -76,6 +76,7 @@ For the classification tasks, where each predictor predicts a class label , this
 $$
 \hat{g}^A_L(x) = \text{arg max} \sum_{i = 1}^{M} {I |g_L(x)=j|}
 $$
+
 Where $I |g_L(x)=j|$ is an indicator function.
                          
 
